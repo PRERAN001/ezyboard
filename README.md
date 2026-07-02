@@ -1,18 +1,95 @@
-# Ezyboard
+# EzyBoard
 
-Ezyboard is a real-time collaborative whiteboard built with Next.js on the frontend and Socket.IO on the backend. Users can join a room, draw on a shared canvas, switch tools, and see updates live across connected clients.
+<p align="center">
+  <img width="900" alt="EzyBoard" src="https://github.com/user-attachments/assets/37782ae6-476b-46d9-9c09-d777c86eee84" />
+</p>
+
+<p align="center">
+  <strong>A real-time collaborative whiteboard built with a custom graphics engine.</strong>
+</p>
+
+<p align="center">
+  Next.js • Node.js • Socket.IO • TypeScript
+</p>
+
+---
+
+## Overview
+
+EzyBoard is a real-time collaborative whiteboard inspired by modern visual collaboration tools such as Excalidraw, Miro, and Figma.
+
+Unlike traditional canvas applications, EzyBoard is built around a modular graphics engine that separates rendering, tools, networking, scene management, and input handling into independent systems. This architecture makes the editor scalable, maintainable, and easy to extend with new drawing tools and collaborative features.
+
+---
 
 ## Features
 
-- Real-time board collaboration
-- Room-based sessions
-- Live join notifications
-- Freehand drawing
-- Line, rectangle, and circle tools
-- Eraser tool
-- Brush color and size controls
-- Canvas zoom controls
-- Socket-driven synchronization
+### Collaboration
+
+- Real-time collaborative drawing
+- Room-based whiteboards
+- Multi-user synchronization
+- Low-latency event broadcasting
+- Live participant management
+
+### Graphics Engine
+
+- Custom Canvas Engine
+- Scene Graph architecture
+- Tool Manager
+- Renderer
+- Input Manager
+- Socket Manager
+- High DPI rendering
+- Continuous render loop
+
+### Drawing Tools
+
+- Pen
+- Line
+- Rectangle
+- Circle
+- Eraser
+- Brush size control
+- Color picker
+- Zoom controls
+
+---
+
+## Architecture
+
+<p align="center">
+  <img width="900" alt="Architecture" src="https://github.com/user-attachments/assets/de53987f-9f97-499d-a6bf-f95a7d13031e" />
+</p>
+
+The application follows an event-driven architecture where every drawing action flows through the graphics engine before being synchronized across connected clients.
+
+```
+User Action
+      │
+      ▼
+Canvas Engine
+      │
+      ▼
+Tool Manager
+      │
+      ▼
+Current Tool
+      │
+      ▼
+Scene
+      ├───────────────┐
+      ▼               ▼
+Renderer       Socket Manager
+      │               │
+      ▼               ▼
+ HTML Canvas     Socket.IO Server
+                      │
+                      ▼
+               Connected Clients
+```
+
+---
 
 ## Tech Stack
 
@@ -22,168 +99,179 @@ Ezyboard is a real-time collaborative whiteboard built with Next.js on the front
 - React 19
 - TypeScript
 - Tailwind CSS 4
-- Socket.IO client
-- Lucide React icons
+- Socket.IO Client
 - Framer Motion
+- Lucide React
 
 ### Backend
 
 - Node.js
 - Express
 - Socket.IO
-- dotenv for environment variables
+- dotenv
 
-## Project Structure
+---
 
-```text
-ezyboard/
-├── app/
-│   ├── page.tsx
-│   └── room/[roomId]/page.tsx
-├── components/
-│   ├── board/
-│   ├── canvas/
-│   ├── network/
-│   └── socket-provider.tsx
-├── lib/
-│   └── socket.ts
-├── server/
-│   ├── index.js
-│   ├── managers/
-│   └── socket/
-└── public/
+## Getting Started
+
+### Clone the repository
+
+```bash
+git clone https://github.com/<your-username>/ezyboard.git
+
+cd ezyboard
 ```
 
-## Prerequisites
+### Install dependencies
 
-- Node.js 18 or newer
-- npm 9 or newer
+```bash
+npm install
 
-## Environment Variables
+cd server
 
-### Frontend
-
-The frontend currently connects to the Socket.IO server at:
-
-```text
-http://localhost:3001
+npm install
 ```
 
-If you move the backend URL, update `lib/socket.ts` accordingly.
+### Configure Environment
 
-### Backend
-
-Create a `.env` file inside `server/` if you want to override the default port:
+Create a `.env` file inside the `server` directory.
 
 ```env
 PORT=3001
 ```
 
-## Installation
-
-Install dependencies for both apps:
-
-```bash
-npm install
-cd server
-npm install
-```
+---
 
 ## Running the Application
 
-### Start the frontend
+### Start the backend
 
-From the `ezyboard/` directory:
+```bash
+cd server
+
+node index.js
+```
+
+### Start the frontend
 
 ```bash
 npm run dev
 ```
 
-The app will run on:
+Frontend
 
-```text
+```
 http://localhost:3000
 ```
 
-### Start the backend
+Backend
 
-From the `server/` directory:
-
-```bash
-node index.js
 ```
-
-The socket server will run on:
-
-```text
 http://localhost:3001
 ```
 
-## Available Scripts
+---
 
-### Frontend
+## Realtime Workflow
 
-From the project root:
-
-```bash
-npm run dev
-npm run build
-npm run start
-npm run lint
+```
+User Draws
+      │
+      ▼
+Canvas Engine
+      │
+      ▼
+Socket Manager
+      │
+      ▼
+Socket.IO Server
+      │
+      ▼
+Broadcast
+      │
+      ▼
+Connected Clients
+      │
+      ▼
+Renderer
 ```
 
-### Backend
+---
 
-From the `server/` directory:
+## Current Status
 
-```bash
-node index.js
-```
+### Completed
 
-## How It Works
+- Real-time multiplayer drawing
+- Room-based collaboration
+- Custom graphics engine
+- Scene Graph
+- Renderer
+- Tool Manager
+- Socket Manager
+- High DPI rendering
 
-1. A user enters a name and room ID on the landing page.
-2. The client emits `join-board` to the Socket.IO server.
-3. The server adds the user to the room and broadcasts a `user-joined` event.
-4. The frontend socket provider shows a toast when someone joins the room.
-5. The board canvas syncs drawing actions through room-scoped socket events.
+### In Progress
 
-## Drawing Tools
+- Camera system
+- Infinite canvas
+- Pan & Zoom
+- Selection tool
+- Undo / Redo
 
-The board supports these tools:
+---
 
-- Select
-- Pen
-- Eraser
-- Line
-- Rectangle
-- Circle
+## Roadmap
 
-Brush controls include color and line width selection.
+### Version 0.2
 
-## Rooms and Collaboration
+- Camera
+- Infinite Canvas
+- Pan & Zoom
 
-- Each board is identified by a room ID.
-- Users joining the same room share the same live canvas session.
-- Join notifications appear for other users already inside the room.
-- Drawing events are scoped to the active board room.
+### Version 0.3
 
-## Notes
+- Selection Tool
+- Object Manipulation
+- Arrow Tool
+- Text Tool
 
-- Board data is currently managed in memory on the server.
-- Refreshing or restarting the backend clears active room state.
-- The project is structured to support future persistence and richer collaboration features.
+### Version 0.4
+
+- Undo / Redo
+- Autosave
+- MongoDB Persistence
+
+### Version 0.5
+
+- Live Cursors
+- Comments
+- Image Support
+- Export PNG
+- Export SVG
+- Version History
+
+---
+
+## Design Principles
+
+- Modular graphics engine
+- Event-driven architecture
+- Separation of rendering and networking
+- Scene as the single source of truth
+- Extensible tool system
+- Real-time synchronization through Socket.IO
+
+---
 
 ## Contributing
 
-If you want to extend the app, good next steps are:
+Contributions are welcome.
 
-- Add text editing
-- Add shape resizing and selection handles
-- Persist boards to a database
-- Add undo and redo support
-- Improve chat and user presence UI
+If you'd like to improve the rendering engine, networking layer, editor tools, or overall architecture, feel free to open an issue or submit a pull request.
+
+---
 
 ## License
 
-This project currently does not declare a license.
+This project is licensed under the MIT License.
