@@ -23,7 +23,8 @@ export default class SocketManager {
             point,
             color,
             width,
-            userId
+            userId,
+            shape
         ) => {
 
             this.socket.emit("stroke-start", {
@@ -33,6 +34,7 @@ export default class SocketManager {
                 color,
                 width,
                 userId,
+                shape,
             });
 
         };
@@ -72,7 +74,8 @@ export default class SocketManager {
                 data.point,
                 data.color,
                 data.width,
-                data.userId
+                data.userId,
+                data.shape
             );
 
         });
@@ -86,11 +89,9 @@ export default class SocketManager {
 
         });
 
-        this.socket.on("stroke-end", (data) => {
+        this.socket.on("stroke-end", () => {
 
-            this.engine.finishStroke(
-                data.strokeId
-            );
+            this.engine.finishStroke();
 
         });
 

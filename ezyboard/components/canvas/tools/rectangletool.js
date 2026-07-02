@@ -1,10 +1,9 @@
 import Tool from "./tool";
 
-class PenTool extends Tool {
+class RectangleTool extends Tool {
 
     constructor(engine) {
         super(engine);
-
         this.strokeId = null;
     }
 
@@ -18,7 +17,7 @@ class PenTool extends Tool {
             this.engine.getBrushColor(),
             this.engine.getBrushWidth(),
             "local",
-            "freehand"
+            "rectangle"
         );
 
         this.engine.onStrokeStart?.(
@@ -27,7 +26,7 @@ class PenTool extends Tool {
             this.engine.getBrushColor(),
             this.engine.getBrushWidth(),
             "local",
-            "freehand"
+            "rectangle"
         );
 
     }
@@ -36,15 +35,8 @@ class PenTool extends Tool {
 
         if (!this.strokeId) return;
 
-        this.engine.appendPoint(
-            this.strokeId,
-            point
-        );
-
-        this.engine.onStrokePoint?.(
-            this.strokeId,
-            point
-        );
+        this.engine.appendPoint(this.strokeId, point);
+        this.engine.onStrokePoint?.(this.strokeId, point);
 
     }
 
@@ -53,10 +45,7 @@ class PenTool extends Tool {
         if (!this.strokeId) return;
 
         this.engine.finishStroke();
-
-        this.engine.onStrokeEnd?.(
-            this.strokeId
-        );
+        this.engine.onStrokeEnd?.(this.strokeId);
 
         this.strokeId = null;
 
@@ -64,4 +53,4 @@ class PenTool extends Tool {
 
 }
 
-export default PenTool;
+export default RectangleTool;

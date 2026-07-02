@@ -17,6 +17,12 @@ function registerRoomEvents(io, socket) {
             username,
         });
 
+        socket.to(boardId).emit(EVENTS.USER_JOINED, {
+            boardId,
+            username,
+            socketId: socket.id,
+        });
+
         io.to(boardId).emit(EVENTS.BOARD_USERS, users);
 
         console.log(`${username} joined ${boardId}`);
